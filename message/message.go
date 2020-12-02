@@ -1,17 +1,19 @@
 package message
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/leave8080/gojson/conf"
 	"github.com/leave8080/gojson/dao"
 )
+
 var (
 	srvDao   *dao.Dao
-	//Validate *validator.Validate
+	Validate *validator.Validate
 )
+
 type MessgeHandler interface {
 	Handle([]byte)
 }
-
 
 // 定义消息处理 handle interface, 使用消息结构体tag校验消息类型
 type HttpHandler interface {
@@ -19,17 +21,16 @@ type HttpHandler interface {
 	Execute()
 }
 
-
-
 type Handler struct {
 }
 
 func InitHandle(c *conf.Config) *Handler {
 	//srvDao = dao.New(c)
 
-	//Validate = validator.New()
+	Validate = validator.New()
 	return &Handler{}
 }
+
 //func (* Handler)Handle(data []byte)  {
 //	messageHandlers := []HttpHandler{
 //		&MxFeedback{},

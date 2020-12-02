@@ -7,9 +7,9 @@ import (
 
 // 项目表（飞燕项目等）
 type MxProject struct {
-	Id            int       `gorm:"column:id;primary_key" json:"id" binding:"required"`
-	TeamId        int       `gorm:"column:team_id" json:"team_id" binding:"required"`
-	CloudPlatform int       `gorm:"column:cloud_platform" json:"cloud_platform" binding:"required"` // 设备平台：0-未知, 1-飞燕
+	Id            int       `gorm:"column:id;primary_key" json:"id" validate:"required"`
+	TeamId        int       `gorm:"column:team_id" json:"team_id" validate:"required"`
+	CloudPlatform int       `gorm:"column:cloud_platform" json:"cloud_platform" validate:"required"` // 设备平台：0-未知, 1-飞燕
 	Name          string    `gorm:"column:name" json:"name"`
 	Projectid     string    `gorm:"column:projectid" json:"projectid"`
 	ProdKey       string    `gorm:"column:prod_key" json:"prod_key"`

@@ -8,28 +8,29 @@ import (
 
 func getDass(c *gin.Context) {
 	messageHandlers := []message.HttpHandler{
-		&message.MxTest{},
+
 		&message.MxProject{},
 
 		&message.MxFeedback{},
+		&message.MxTest{},
 	}
 
-	for _, mHandle := range messageHandlers {
+	for i, mHandle := range messageHandlers {
 		handle := mHandle.(message.HttpHandler)
-		err := c.ShouldBindJSON(handle)
-		if err != nil {
-			log.Error("bindJson", err)
-			continue
-		}
-		name2 := handle.TableNames()
-		// 校验数据是否为该类型的消息
-		//err = message.Validate.Struct(handle)
+		//err := c.ShouldBindJSON(handle)
 		//if err != nil {
-		//	// 不符合
+		//	log.Error("bindJson", err)
 		//	continue
 		//}
+		name2 := handle.TableNames()
+		// 校验数据是否为该类型的消息
+		err := message.Validate.Struct(handle)
+		if err != nil {
+			// 不符合
+			continue
+		}
 		//names := mHandle.TableNames()
-		log.Debug("@@@", name2)
+		log.Debug("@@@", i, name2)
 		//enable := true
 		//for _, key := range names {
 		//	_, ok := c.Items[key]
