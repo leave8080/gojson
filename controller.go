@@ -6,18 +6,19 @@ import (
 	"gofer/pkg/log"
 )
 
-func getDass(c *gin.Context)  {
+func getDass(c *gin.Context) {
 	messageHandlers := []message.HttpHandler{
-		&message.MxFeedback{},
-		&message.MxProject{},
 		&message.MxTest{},
+		&message.MxProject{},
+
+		&message.MxFeedback{},
 	}
 
-	for _,mHandle:=range messageHandlers{
+	for _, mHandle := range messageHandlers {
 		handle := mHandle.(message.HttpHandler)
 		err := c.ShouldBindJSON(handle)
-		if err !=nil{
-			log.Error(err)
+		if err != nil {
+			log.Error("bindJson", err)
 			continue
 		}
 		name2 := handle.TableNames()
@@ -27,8 +28,8 @@ func getDass(c *gin.Context)  {
 		//	// 不符合
 		//	continue
 		//}
-		names := mHandle.TableNames()
-		log.Debug("@@@",name2,"####",names)
+		//names := mHandle.TableNames()
+		log.Debug("@@@", name2)
 		//enable := true
 		//for _, key := range names {
 		//	_, ok := c.Items[key]
@@ -37,7 +38,7 @@ func getDass(c *gin.Context)  {
 		//		break
 		//	}
 		//}
-		 handle.Execute()
+		handle.Execute()
 	}
 
 }
