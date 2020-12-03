@@ -24,6 +24,6 @@ func (m *MxFeedback) TableNames() string {
 	return "mx_feedback"
 }
 
-func (m *MxFeedback) Execute() {
+func (m *MxFeedback) Execute(req *MessInfo) {
 	log.Info("Execute===>", m.TableNames())
 }

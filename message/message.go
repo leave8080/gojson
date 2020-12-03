@@ -9,6 +9,7 @@ import (
 var (
 	srvDao   *dao.Dao
 	Validate *validator.Validate
+	Mx       map[string]HttpHandler
 )
 
 type MessgeHandler interface {
@@ -18,7 +19,7 @@ type MessgeHandler interface {
 // 定义消息处理 handle interface, 使用消息结构体tag校验消息类型
 type HttpHandler interface {
 	TableNames() string
-	Execute()
+	Execute(req *MessInfo)
 }
 
 type Handler struct {
@@ -29,6 +30,21 @@ func InitHandle(c *conf.Config) *Handler {
 
 	Validate = validator.New()
 	return &Handler{}
+}
+func InitHttp() {
+	messageHandlers := []HttpHandler{
+
+		&MxProject{},
+
+		&MxFeedback{},
+		&MxTest{},
+	}
+	Mx = make(map[string]HttpHandler)
+	for _, mHandle := range messageHandlers {
+		handle := mHandle.(HttpHandler)
+
+		Mx[handle.TableNames()] = handle
+	}
 }
 
 //func (* Handler)Handle(data []byte)  {

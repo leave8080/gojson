@@ -26,6 +26,6 @@ func (m *MxProject) TableNames() string {
 	return "mx_project"
 }
 
-func (m *MxProject) Execute() {
+func (m *MxProject) Execute(req *MessInfo) {
 	log.Info("Execute===>", m.TableNames())
 }

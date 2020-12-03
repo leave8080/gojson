@@ -7,39 +7,22 @@ import (
 )
 
 func getDass(c *gin.Context) {
-	messageHandlers := []message.HttpHandler{
 
-		&message.MxProject{},
-
-		&message.MxFeedback{},
-		&message.MxTest{},
+	req := new(message.MessInfo)
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		log.Error("bindJson", err)
+		return
+	}
+	//log.Debug("ShouldBindJSON:", req.Table, req.Opt, req.BeforeValues, req.Values)
+	// 校验数据是否为该类型的消息
+	err = message.Validate.Struct(message.Mx[req.Table])
+	if err != nil {
+		// 不符合
+		log.Error("Validate err:", err)
+		return
 	}
 
-	for i, mHandle := range messageHandlers {
-		handle := mHandle.(message.HttpHandler)
-		//err := c.ShouldBindJSON(handle)
-		//if err != nil {
-		//	log.Error("bindJson", err)
-		//	continue
-		//}
-		name2 := handle.TableNames()
-		// 校验数据是否为该类型的消息
-		err := message.Validate.Struct(handle)
-		if err != nil {
-			// 不符合
-			continue
-		}
-		//names := mHandle.TableNames()
-		log.Debug("@@@", i, name2)
-		//enable := true
-		//for _, key := range names {
-		//	_, ok := c.Items[key]
-		//	if !ok {
-		//		enable = false
-		//		break
-		//	}
-		//}
-		handle.Execute()
-	}
+	message.Mx[req.Table].Execute(req)
 
 }

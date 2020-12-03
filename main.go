@@ -5,7 +5,9 @@ import (
 	"github.com/leave8080/gojson/conf"
 	"github.com/leave8080/gojson/message"
 )
+
 var handler *message.Handler
+
 func main() {
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -13,7 +15,9 @@ func main() {
 			"message": "pong",
 		})
 	})
+
 	handler = message.InitHandle(conf.Conf)
-	r.POST("/data",getDass)
+	message.InitHttp()
+	r.POST("/data", getDass)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
